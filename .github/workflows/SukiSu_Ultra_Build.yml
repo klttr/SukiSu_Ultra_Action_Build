@@ -95,11 +95,16 @@ jobs:
           cd kernel_workspace
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}
           git clone https://github.com/SukiSU-Ultra/SukiSU_patch.git
+          git clone https://github.com/Xiaomichael/kernel_patches.git
           cd kernel_platform
           echo "Patching susfs"
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch ./common/
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
+
+          cp ../kernel_patches/001-lz4.patch ./common/
+          cp ../kernel_patches/lz4armv8.S ./common/lib
+          cp ../kernel_patches/002-zstd.patch ./common/
 
           echo "patching zram"
           cp -r ../SukiSU_patch/other/zram/lz4k/include/linux/* ./common/include/linux
@@ -116,8 +121,8 @@ jobs:
           patch -p1 -F 3 < 69_hide_stuff.patch
           echo "Patching vfs"
           patch -p1 -F 3 < syscall_hooks.patch
-          patch -p1 < ../../.repo/manifests/patches/0001-lz4-v1.10.0.patch
-          patch -p1 < ../../.repo/manifests/patches/0001-zstd-v1.5.7.patch
+          git apply -p1 < 001-lz4.patch || true
+          patch -p1 < 002-zstd.patch || true
 
           cp ../../SukiSU_patch/other/zram/zram_patch/${{ github.event.inputs.KERNEL_VERSION }}/lz4kd.patch ./
           echo "Patching lz4kd"
