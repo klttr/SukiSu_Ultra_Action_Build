@@ -167,15 +167,27 @@ jobs:
 
           echo "CONFIG_TCP_CONG_ADVANCED=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_CUBIC=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_VEGAS=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_NV=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_BRUTAL=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_NET_SCH_FQ=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_TCP_CONG_BIC=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_WESTWOOD=n" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_TCP_CONG_HTCP=n" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_WESTWOOD=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_TCP_CONG_HTCP=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_DEFAULT_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
+          # BBR设为默认拥塞控制算法
+          echo "CONFIG_DEFAULT_TCP_CONG=bbr" >> ./common/arch/arm64/configs/gki_defconfig
+          # 仅加入算法
+          # echo "CONFIG_DEFAULT_TCP_CONG=cubic" >> ./common/arch/arm64/configs/gki_defconfig
 
           echo "CONFIG_NET_SCH_DEFAULT=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_DEFAULT_FQ=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_DEFAULT_NET_SCH="fq"" >> ./common/arch/arm64/configs/gki_defconfig
+
+          # SSG IO 调度器
+          echo "CONFIG_MQ_IOSCHED_SSG=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_MQ_IOSCHED_SSG_CGROUP=y" >> ./common/arch/arm64/configs/gki_defconfig
 
           sed -i 's/check_defconfig//' ./common/build.config.gki
 
